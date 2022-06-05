@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const authRoute = require("./router/authRoute");
 require("dotenv").config();
 const initializePassport = require("./passportConfig");
+const test = require("./test");
 
 app = express();
 initializePassport(passport);
@@ -17,6 +18,7 @@ app.listen(process.env.PORT, async () => {
     .then(() => {
       console.log("Mongodb connected");
       console.log(`Server started in port : ${process.env.PORT}`);
+      //   test();
     })
     .catch((e) => {
       console.log(e);
