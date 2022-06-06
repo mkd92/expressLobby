@@ -1,4 +1,7 @@
 const { Schema } = require("mongoose");
+const bcrypt = require("bcrypt");
+require("dotenv").config();
+const jwt = require("jsonwebtoken");
 
 const UserSchema = new Schema({
   username: {
@@ -6,7 +9,33 @@ const UserSchema = new Schema({
     required: true,
     unique: true,
   },
-  password: String,
+  password: {
+    type: String,
+    required: true,
+  },
 });
+UserSchema.pre("save", function (next) {
+  if (!this.isModified("password")) return next();
+  bcrypt.hash(this.password, 12, (err, hash) => {
+    if (err) {
+      throw err;
+    }
+    this.password = hash;
+    next();
+  });
+});
+UserSchema.methods.verifyPassword = (password) => {
+  return bcrypt.compareSync(password, this.password);
+};
+UserSchema.methods.generateJWT = () => {
+  return jwt.sign({ sub: this._id }, process.env.ACCESS_SECRET, {
+    expiresIn: 180,
+  });
+};
+UserSchema.methods.generateRefresh = () => {
+  return jwt.sign({ sub: this._id }, process.env.ACCESS_SECRET, {
+    expiresIn: "2d",
+  });
+};
 
 module.exports = UserSchema;
