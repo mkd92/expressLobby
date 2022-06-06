@@ -7,9 +7,13 @@ const PropertySchema = new Schema({
     type: String,
     required: true,
   },
-  Address: {
+  address: {
     type: String,
     required: true,
+  },
+  user_id: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
   },
   //   properties: [
   //     {

@@ -16,7 +16,7 @@ const UserSchema = new Schema({
   properties: [
     {
       type: Schema.Types.ObjectId,
-      ref: "property",
+      ref: "Property",
     },
   ],
 });
