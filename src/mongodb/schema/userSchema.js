@@ -13,6 +13,12 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  properties: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "property",
+    },
+  ],
 });
 UserSchema.pre("save", function (next) {
   if (!this.isModified("password")) return next();
