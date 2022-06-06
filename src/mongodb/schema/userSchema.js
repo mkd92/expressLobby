@@ -24,18 +24,15 @@ UserSchema.pre("save", function (next) {
     next();
   });
 });
-UserSchema.methods.verifyPassword = (password) => {
-  return bcrypt.compareSync(password, this.password);
-};
-UserSchema.methods.generateJWT = () => {
-  return jwt.sign({ sub: this._id }, process.env.ACCESS_SECRET, {
-    expiresIn: 180,
-  });
-};
-UserSchema.methods.generateRefresh = () => {
-  return jwt.sign({ sub: this._id }, process.env.ACCESS_SECRET, {
-    expiresIn: "2d",
-  });
-};
+// UserSchema.methods.generateJWT = () => {
+//   return jwt.sign({ sub: this._id }, process.env.ACCESS_SECRET, {
+//     expiresIn: 180,
+//   });
+// };
+// UserSchema.methods.generateRefresh = () => {
+//   return jwt.sign({ sub: this._id }, process.env.ACCESS_SECRET, {
+//     expiresIn: "2d",
+//   });
+// };
 
 module.exports = UserSchema;
