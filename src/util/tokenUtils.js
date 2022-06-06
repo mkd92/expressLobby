@@ -5,15 +5,15 @@ const getUser = require("./getUser");
 
 const generateJWT = (id) => {
   return {
-    access_token: jwt.sign({ sub: id }, process.env.ACCESS_SECRET, {
+    access_token: jwt.sign({ _id: id }, process.env.ACCESS_SECRET, {
       expiresIn: 300,
     }),
-    exp: dayjs().add(5, "minutes").toDate(),
+    expires: Date.now(),
   };
 };
 
 const generateRefresh = (id) => {
-  return jwt.sign({ sub: id }, process.env.REFRESH_SECRET, {
+  return jwt.sign({ _id: id, iat: Date.now() }, process.env.REFRESH_SECRET, {
     expiresIn: "2d",
   });
   //   return jwt.sign({ sub: id }, process.env.REFRESH_SECRET, {
@@ -30,10 +30,11 @@ const setRefreshToken = (res, id) => {
 };
 
 const generateAccessFromRefresh = async (token) => {
-  const payload = await jwt.verify(token, process.env.REFRESH_SECRET);
-  if (payload.sub) {
-    const userId = payload.sub;
-    user = await getUser({ id: userId });
+  const payload = jwt.verify(token, process.env.REFRESH_SECRET);
+  const _id = payload._id;
+  if (_id) {
+    user = await getUser({ id: _id });
+    // console.log(user);
     if (user) {
       return generateJWT(user._id);
     }
