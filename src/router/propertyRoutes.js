@@ -10,6 +10,10 @@ router.get("/", async (req, res) => {
   console.log(userWProperty);
   res.send(userWProperty.toJSON());
 });
+router.get("/user", async (req, res) => {
+  const userData = await UserModel.findById(req.user._id).exec();
+  res.send(userData.toJSON());
+});
 router.post("/create", (req, res) => {
   const { prop_name, address } = req.body;
   // console.log(req.user);

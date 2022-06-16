@@ -6,6 +6,8 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 const status = require("http-status");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
+
 // file imports
 const authRoute = require("./router/authRoute");
 const initializePassport = require("./passportConfig");
@@ -18,6 +20,7 @@ app = express();
 initializePassport(passport);
 app.use(passport.initialize());
 // use json parser
+app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 // request logger
