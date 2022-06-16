@@ -6,9 +6,9 @@ const getUser = require("./getUser");
 const generateJWT = (id) => {
   return {
     access_token: jwt.sign({ _id: id }, process.env.ACCESS_SECRET, {
-      expiresIn: 300,
+      expiresIn: 3000,
     }),
-    expires: Date.now(),
+    expires: Date.now() + 3000 * 1000,
   };
 };
 

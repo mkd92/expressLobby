@@ -3,27 +3,32 @@ const { PropertyModel, UserModel } = require("../mongodb/model/userModel");
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
-  const userWProperty = await UserModel.findById(req.user._id)
+router.get("/", (req, res) => {
+  UserModel.findById(req.user._id)
     .populate("properties")
-    .exec();
-  console.log(userWProperty);
-  res.send(userWProperty.toJSON());
+    .then((user) => {
+      res.json(user);
+    });
 });
 router.get("/user", async (req, res) => {
   const userData = await UserModel.findById(req.user._id).exec();
   res.send(userData.toJSON());
 });
 router.post("/create", (req, res) => {
+  const user = UserModel.findById(req.user._id);
+
   const { prop_name, address } = req.body;
-  // console.log(req.user);
-  // console.log(res.body)
   const new_property = new PropertyModel({
     prop_name,
     address,
-    user_id: req.user._id,
   });
-  new_property.save();
+  new_property.save().then((property) =>
+    UserModel.findByIdAndUpdate(req.user._id, {
+      $push: {
+        properties: property._id,
+      },
+    })
+  );
   res.send("Properties home page");
 });
 
