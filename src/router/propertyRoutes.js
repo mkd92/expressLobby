@@ -1,14 +1,24 @@
 const express = require("express");
+const httpStatus = require("http-status");
+
 const { PropertyModel, UserModel } = require("../mongodb/model/userModel");
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
+router.get("/", (req, res, next) => {
   UserModel.findById(req.user._id)
     .populate("properties")
-    .then((user) => {
-      res.json(user);
+    .exec(function (err, user) {
+      if (err) {
+        //     // console.log("error");
+        res.send({ error: err.message });
+      }
+      if (user) {
+        const { _id, username, properties } = user;
+        res.json({ _id, username, properties });
+      }
     });
+  // next();
 });
 router.get("/user", async (req, res) => {
   const userData = await UserModel.findById(req.user._id).exec();

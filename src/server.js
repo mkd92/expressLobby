@@ -9,6 +9,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUiExpress = require("swagger-ui-express");
+const morgan = require("morgan");
 
 // file imports
 const authRoute = require("./router/authRoute");
@@ -45,12 +46,13 @@ app.use(passport.initialize());
 app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
+// app.use(morgan("combined"));
 // request logger
-app.use("/docs", swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerSpec));
-app.use((req, res, next) => {
-  console.log(`Request ${req.url}: Method ${req.method}`);
-  next();
-});
+// app.use("/docs", swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerSpec));
+// app.use((req, res, next) => {
+//   console.log(`Request ${req.url}: Method ${req.method}`);
+//   next();
+// });
 
 // adding auth routes
 app.use("/auth", authRoute);
@@ -60,10 +62,10 @@ app.use(
   propertyRoutes
 );
 // response logger
-app.use((req, res, next) => {
-  console.log(`Response Status: ${res.statusCode} ${status[res.statusCode]}`);
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log(`Response Status: ${res.statusCode} ${status[res.statusCode]}`);
+//   next();
+// });
 // listening to server and mongodb connected
 app.listen(process.env.PORT, async () => {
   await mongoose
