@@ -6,6 +6,7 @@ const { PropertyModel, UserModel } = require("../mongodb/model/userModel");
 const router = express.Router();
 
 router.get("/", (req, res, next) => {
+  // res;
   UserModel.findById(req.user._id)
     .populate("properties")
     .exec(function (err, user) {
@@ -15,7 +16,7 @@ router.get("/", (req, res, next) => {
       }
       if (user) {
         const { _id, username, properties } = user;
-        res.json({ _id, username, properties });
+        res.cookie("hello", "hi").json({ _id, username, properties });
       }
     });
   // next();

@@ -4,6 +4,7 @@ const { generateAccessFromRefresh } = require("../util/tokenUtils");
 
 module.exports = async (req, res, next) => {
   const refreshToken = req.cookies.refresh_token;
+  // console.log(refreshToken);
   if (refreshToken) {
     const access_token = await generateAccessFromRefresh(refreshToken);
     // console.log(access_token);

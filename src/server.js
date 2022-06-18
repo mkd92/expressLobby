@@ -39,11 +39,19 @@ const swaggerSpec = swaggerJsdoc(options);
 
 // initialize express
 app = express();
+app.use(function (req, Res, Next) {
+  Res.header("Access-Control-Allow-Origin", req.headers.origin);
+  Res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  Next();
+});
 // initialize passport js
 initializePassport(passport);
 app.use(passport.initialize());
 // use json parser
-app.use(cors());
+app.use(cors({ origin: "http://192.168.29.112:3000", credentials: true }));
 app.use(cookieParser());
 app.use(express.json());
 // app.use(morgan("combined"));
@@ -67,7 +75,7 @@ app.use(
 //   next();
 // });
 // listening to server and mongodb connected
-app.listen(process.env.PORT, async () => {
+app.listen(process.env.PORT, "192.168.29.112", async () => {
   await mongoose
     .connect("mongodb://localhost:27017/lobby-express-auth")
     .then(() => {

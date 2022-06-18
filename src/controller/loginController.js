@@ -28,7 +28,7 @@ function loginController(req, res, next) {
       return res.json({ token, expires: Date.now() + 300 * 1000 });
     });
   })(req, res);
-  //   next();
+  // next();
 }
 
 module.exports = loginController;
