@@ -15,11 +15,11 @@ const PropertySchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
-  //   properties: [
-  //     {
-  //       type: Schema.Types.ObjectId,
-  //       ref: "property",
-  //     },
-  //   ],
+  units: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Unit",
+    },
+  ],
 });
 module.exports = PropertySchema;

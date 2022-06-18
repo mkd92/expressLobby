@@ -19,6 +19,12 @@ const UserSchema = new Schema({
       ref: "Property",
     },
   ],
+  units: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Unit",
+    },
+  ],
 });
 UserSchema.pre("save", function (next) {
   if (!this.isModified("password")) return next();
@@ -30,15 +36,5 @@ UserSchema.pre("save", function (next) {
     next();
   });
 });
-// UserSchema.methods.generateJWT = () => {
-//   return jwt.sign({ sub: this._id }, process.env.ACCESS_SECRET, {
-//     expiresIn: 180,
-//   });
-// };
-// UserSchema.methods.generateRefresh = () => {
-//   return jwt.sign({ sub: this._id }, process.env.ACCESS_SECRET, {
-//     expiresIn: "2d",
-//   });
-// };
 
 module.exports = UserSchema;

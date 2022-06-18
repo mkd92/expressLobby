@@ -1,7 +1,7 @@
 const httpStatus = require("http-status");
 
 const logoutController = (req, res, next) => {
-  console.log("logout");
+  // console.log("logout");
   req.logout(function (err) {
     // TODO: Error handling
     res.clearCookie("refresh_token");
