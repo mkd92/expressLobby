@@ -38,13 +38,13 @@ router.post("/create", (req, res) => {
     prop_name,
     address,
   });
-  new_property.save().then((property) => {
+  new_property.save().then((property) =>
     UserModel.findByIdAndUpdate(req.user._id, {
       $push: {
         properties: property._id,
       },
-    });
-  });
+    })
+  );
   res.send("Properties home page");
 });
 router.post("/:prop_id/create_unit", (req, res) => {
